@@ -1,0 +1,14 @@
+PDB file
+
+The Protein Data Bank format
+X Ray와 핵자기공명에서 보여지는 고분자 자료를 나타내는 fortmat 형태
+http://www.wwpdb.org/documentation/file-format.php.
+
+mmcif 파일 
+
+The mmCIF file format, which has been developed under the auspices of the International Union of Crystallography (IUCr), is to extend the Crystallographic Information File (CIF) data representation used for describing small molecule structures and associated diffraction experiments.
+
+This extension is referred to as the macromolecular Crystallographic Information File (mmCIF).
+CIF was developed to describe small molecule organic structures and the crystallographic experiment by the International Union of Crystallography (IUCr) Working Party on Crystallographic Information at the behest of the IUCr Commission on Crystallographic Data and the IUCr Commission on Journals. 
+The result of this effort was a core dictionary of data items sufficient for archiving the small molecule crystallographic experiment and its results.  
+The format of the small molecule CIF dictionary and the data files based upon that dictionary conform to a restricted version of the Self Defining Text Archive and Retrieval (STAR) representation developed by Hall.ㄱ
