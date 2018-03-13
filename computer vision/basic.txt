@@ -1,0 +1,7 @@
+computer vision 은 computer graphics와 반대되는 개념이다
+computer vision 은 premitive (?) 를 인식하여 그걸로
+어떤 정보를 추출해내는거고
+computer graphics는 따로 그런 정보를 받아서 실제로 그림을 그리는 행위다
+
+Role of knowledge에 대해서 알아야 한다
+
