@@ -5,3 +5,44 @@ computer graphics는 따로 그런 정보를 받아서 실제로 그림을 그�
 
 Role of knowledge에 대해서 알아야 한다
 
+image geometry
+Image Formation Process
+
+이미지 프로세싱에서 표본화와 양자화의 차이
+https://sisu.ut.ee/imageprocessing/book/2 
+표본화 1024*1024같은 해상도를 나타낸것과 같으며 
+양자화는 한 픽셀을 라운딩시킬때 나타나는 차이
+
+cmy 와 rgb의 차이점
+cmy - print
+rgb - 모니터
+
+정보
+수업시간에는 책의 1~5, 14장을 하실 계획이라고 하심
+
+image processing에서 object의 정보의
+An object in image processing is an identifiable portion of an image that can be interpreted as a single unit or is an identifiable portion of an image that can be interpreted as a single unit.
+핵심 - single unit
+
+levels of computation
+
+point level 
+local level - smoothing 과 관련이 있음 노이즈를 제거함 
+global level - 이미지 전체를 다 탐색한 다음에 
+object level
+
+각각을 설명하라
+
+# 수업시간에는 배우지 않은 내용
+Compactness measure of a shape
+scale과 orientation 과 관계없음
+모양의 극값과 별로 관련이 없음
+어떠한 기하적 모양에도 적용됨
+차원과도 관련없음
+Tounderstand : They agree with intuitive notions of what makes a shpae compact
+
+image segmentation using hierachical merge tree
+https://arxiv.org/abs/1505.06389
+
+GIGO garbage in garbage out 
+만약에 data 가 쓰레기면 출력도 쓰레기가 나온다 
