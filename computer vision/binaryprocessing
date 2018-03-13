@@ -1,0 +1,17 @@
+장면을 더 잘 표현하려하면 기억용량 더 차지함
+
+2 grey level image 와 256 grey level 이미지
+비트로 바꿔서 생각하면 용량차이가 8배 남을 쉽게 알 수 있음
+
+Thresholding
+
+Region - a subset of image
+Segmentation - grouping pixels into regions
+
+영상처리할 때는 관심있는 부부을 1로 바꾸기 때문에
+2.1 Thresholding에 T가 있다
+
+#안배운 내용
+Otsu's method
+http://www.ipol.im/pub/art/2016/158/article.pdf
+https://github.com/RTimal/Otsu-Method
