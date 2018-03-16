@@ -105,19 +105,19 @@ int main(void)
 		exit(1);
 	}
 
-  // 주소 안의 값을 나타냄 temp example 
-  *addr_led = 0x01;
-  for( i = 0; i < 7; i++) {
-    *addr_led *= 2;
-    sleep(1);
-  }
+    // 주소 안의 값을 나타냄 temp example 
+    *addr_led = 0x01;
+    for( i = 0; i < 7; i++) {
+      *addr_led *= 2;
+      sleep(1);
+    }
 
 	/* process start */
-  /* 처음 실행시 Text LCD는 빈 칸으로 표시, 이외 나머진 off 상태 */
+    /* 처음 실행시 Text LCD는 빈 칸으로 표시, 이외 나머진 off 상태 */
 
-  /* 
-	init 
-  종료 조건을 설정하지 않는다고 가정할 때
+    /* 
+	  init 
+      종료 조건을 설정하지 않는다고 가정했으므로 그냥 while true 로 처리. ctrl-z 로 끔 
 	*/
 	while(true)
 	{ 
@@ -126,47 +126,47 @@ int main(void)
 			push_flag[0]++;
 			if(push_flag[0] == 1)
 			{
-         // 아래쪽의 led on 
-				 for(int i = 0; i < 8; i++)
-				 {
-					 if(i<4)
-					 {
-  				   *(addr_led) + i = 0x01; // 이렇게 하는것이 맞는지 헷갈림 
-					 }
-					 else
-					 {
-  				   *(addr_led) + i = 0x00; // 이렇게 하는것이 맞는지 헷갈림 
-					 }
-				 }
+                // 아래쪽의 led on 
+				for(int i = 0; i < 8; i++)
+				{
+					if(i<4)
+					{
+  				        *(addr_led + i) = 0x01; // 이렇게 하는것이 맞는지 헷갈림 
+					}
+					else
+					{
+  				 	    *(addr_led + i) = 0x00; // 이렇게 하는것이 맞는지 헷갈림 
+					}
+				}
 			}
 			else if(push_flag[0] == 2)
 			{
-				 for(int i = 0; i < 8; i++)
-				 {
-					 if(i<4)
-					 {
-  				   *(addr_led + i) = 0x00; // 이렇게 하는것이 맞는지 헷갈림 
-					 }
-					 else
-					 {
-  				   *(addr_led + i) = 0x01; // 이렇게 하는것이 맞는지 헷갈림 
-					 }
-				 }
+				for(int i = 0; i < 8; i++)
+				{
+					if(i<4)
+					{
+  				       *(addr_led + i) = 0x00; // 이렇게 하는것이 맞는지 헷갈림 
+					}
+					else
+					{
+  				  	   *(addr_led + i) = 0x01; // 이렇게 하는것이 맞는지 헷갈림 
+					}
+				}
 			}
 			else if(push_flag[0] == 3)
 			{
-				 for(int i = 0; i < 8; i++)
-				 {
-  				 *(addr_led + i) = 0x01;   // 이렇게 하는것이 맞는지 헷갈림 
-				 }
+				for(int i = 0; i < 8; i++)
+				{
+  				 	*(addr_led + i) = 0x01;   // 이렇게 하는것이 맞는지 헷갈림 
+				}
 	
 			}
 			else if(push_flag[0] == 4)
 			{
-				 for(int i = 0; i < 8; i++)
-				 {
-  				 *(addr_led + i) = 0x00;
-				 }
+				for(int i = 0; i < 8; i++)
+				{
+  					*(addr_led + i) = 0x00;
+				}
 				push_flag[0] = 0; // push flag 초기화
 			}
 		} // TODO : extract function from seven_segments 
@@ -177,7 +177,7 @@ int main(void)
 			{
 				for(int i = 0; i < 8; i++)
 				{
-				  *(addr_seven_segment + 0 + i) = seven_segments[2][i];
+				    *(addr_seven_segment + 0 + i) = seven_segments[2][i];
 					*(addr_seven_segment + 8 + i) = seven_segments[0][i];
 					*(addr_seven_segment + 16+ i) = seven_segments[1][i];
 					*(addr_seven_segment + 24+ i) = seven_segments[8][i];
@@ -185,11 +185,11 @@ int main(void)
 			}
 			else if(push_flag[1] == 2) // seven segement off
 			{
-         for(int i = 0; i < 36; i++)
-				 {
-					 *(addr_seven_segment + i) = 0x00;
-				 } 
-				 push_flag[1] = 0;	
+         	for(int i = 0; i < 36; i++)
+				{
+					*(addr_seven_segment + i) = 0x00;
+				} 
+				push_flag[1] = 0;	
 			}
 		}
 		else if(PUSH_ON_3) //첫번째 누를 시 dot matrix 에 자기 조 숫자 표시 - 크기 관계 없음 10조의 경우 0 1조의 경우 1 2조의 조의 경우 2
@@ -217,10 +217,10 @@ int main(void)
 			*addr_text_lcd =
 			*addr_text_lcd =
 			*addr_text_lcd =
-      *addr_text_lcd =
+		    *addr_text_lcd =
 			*/
 
-      // under line
+      		// under line
 			*(addr_text_lcd + 16) = 'T';
 			*(addr_text_lcd + 17) = 'e';
 			*(addr_text_lcd + 18) = 'a';
@@ -233,7 +233,7 @@ int main(void)
 			*addr_text_lcd =
 			*addr_text_lcd =
 			*addr_text_lcd =
-      */
+     		*/
 
 			push_flag[3]++;
 		}// TODO : refactor this fucntion for simplify 
@@ -241,7 +241,7 @@ int main(void)
 		{
 			for(i=0;i< 1024;i++)
 			{
-				*(addr_fpga + i) = 0 // 초기화 - 이렇게 하는게 맞는지 의문임 
+				*(addr_fpga + i) = 0; // 초기화 - 이렇게 하는게 맞는지 의문임 
 			}
 			push_flag[4]++;
 		} 
@@ -257,7 +257,7 @@ int main(void)
 	munmap(addr_seven_segment,4096);
 	munmap(addr_step_motor   ,4096);
 	munmap(addr_text_lcd     ,4096);
-  */
+    */
 	
 	close(fd);
 	return 0;
