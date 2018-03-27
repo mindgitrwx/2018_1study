@@ -109,7 +109,7 @@ int main(void)
     *addr_led = 0x01;
     for( i = 0; i < 7; i++) {
       *addr_led *= 2;
-      sleep(1);
+      sleep(1); // sleep 을 이용하여 debug 할 때 지나치게 빠르게 보이지 않도록 할 수 있음 
     }
 
 	/* process start */
@@ -145,6 +145,7 @@ int main(void)
 				{
 					if(i<4)
 					{
+						
   				       *(addr_led + i) = 0x00; // 이렇게 하는것이 맞는지 헷갈림 
 					}
 					else
@@ -199,7 +200,7 @@ int main(void)
 		} // TODO: 끄라는 이야기는 안보임 : 요구사황을 보다 명확하게 바꿀 필요가 있음. Dot matrix 감이 잘 안옴
 		else if(PUSH_ON_4) //첫번째 누를 시 Text lcd 화면의 첫 라인에 2017.03.16, 두 번째 라인에 Team xx 출력 (xx: 자신의 팀 번호)*/
 		{
-			// char 형으로 선언되어 있지 않으므로 이렇게 노가다해야 하는지 의문스럽다. 
+			// char 형으로 선언되어 있지 않으므로 이렇게 해야 하는지 약간 의문 - 좀더 간명한 방법이 있을 걸로 예상됨 
 			// upper line
 			*(addr_text_lcd + 0) = '2';
 			*(addr_text_lcd + 1) = '0';
@@ -259,6 +260,6 @@ int main(void)
 	munmap(addr_text_lcd     ,4096);
     */
 	
-	close(fd);
+	close(fd); // 파일 디렉토리를 닫아 줌 
 	return 0;
 }
