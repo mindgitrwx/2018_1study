@@ -6,6 +6,7 @@
  *
  * Modified :
  * 	Created : March 16, 2018 by Dongheon Han
+ *  Modified: March 27, 2018 by Jonghyeon Yeo - add parsed button output
 ****************************************************************************/
 
 #include <stdio.h>
@@ -20,6 +21,8 @@
 #include <termios.h>
 #include <signal.h>
 
+
+//Start of defines 
 #define BUFSIZE 128
 
 #define FPGA_BASEADDRESS        0x08000000
@@ -43,6 +46,7 @@
 #define DEV_NUM_FND 5
 #define DEV_NUM_DOT 6
 #define DEV_NUM_TEXT 7
+//End of defines 
 
 unsigned char quit = 0;
 
@@ -50,8 +54,10 @@ unsigned char quit = 0;
 
 #define BUFSIZE 128
 
-int parse_output(void) {
-    char *cmd = "ls -l";    
+int parsed_button[9] = {0, } // Todo: Global initilization - hidden problem
+
+int parse_button_output(void) {
+    char *cmd = "./fpga_test_push_switch | tail -n 1";    
 
     char buf[BUFSIZE];
     FILE *fp;
@@ -61,10 +67,17 @@ int parse_output(void) {
         return -1;
     }
 
-    //[0] [0] [0] [0] [0] [0] [0] [0]
-    //[0][0][0][0][0][0][0][0]
-    while (fgets(buf, BUFSIZE, fp) != NULL) {
-        // Do whatever you want here...
+    //if output is [0] [0] [0] [0] [0] [0] [0] [0]
+    //while (fgets(buf, BUFSIZE, fp) != NULL) {
+    //    for(int i = 0; i < 9; i ++)
+    //    {
+    //        parse_button[i] = (int)buf[ 1 + (4 * i)] - 48; 
+    //    }
+    //}
+
+    //if output is [0][0][0][0][0][0][0][0]
+    while (fgets(buf, BUFSIZE, fp) != NULL) { // no need to use while when I get tailed output
+        parse_button[i] = (int)buf[ 1 + (3 * i)] - 48; 
         printf("OUTPUT: %s", buf);
     }
 
@@ -82,176 +95,110 @@ void user_signal1(int sig)
 
 int main(void)
 {
-        int i;
+    int i;
 	int dev_push_switch, dev_led, dev_fnd, dev_dot, dev_text_lcd;
 	int buff_size;
+
+    // program run
+    while(1)
+    {
+        usleep(40000); // test
+        read(dev_push_switch,&push_sw_buff, buff_size);
         
-        int flag_push[9] = {0,};
-
-	unsigned char push_sw_buff[MAX_BUTTON];
-
-	dev_push_switch = open("/dev/fpga_push_switch", O_RDWR);
-	//dev_led = open("/dev/fpga_led", O_RDWR);
-	//dev_fnd = open("/dev/fpga_fnd", O_RDWR);
-	//dev_dot = open("/dev/fpga_dot", O_RDWR);
-	//dev_text_lcd = open("/dev/fpga_text_lcd", O_RDWR);
-
-	//close(dev_push_switch);
-	//close(dev_led);
-	//close(dev_fnd);
-	//close(dev_dot);
-	//close(dev_text_lcd);
-        ////for get dev number
-        //printf("Device Open switch  dev number: %d \n", dev_push_switch);
-        //printf("Device Open led dev number: %d \n", dev_led);
-        //printf("Device Open fnd dev number: %d \n", dev_fnd);
-        //printf("Device Open dot dev number: %d \n", dev_dot);
-        //printf("Device Open text dev number: %d \n", dev_text_lcd);
-
-        // Device Push open
-        if(dev_push_switch<0)
+        parse_button_output();
+       
+        for(i=0; i<9; i++)
         {
-            //close(dev_push_switch);
-            //close(DEV_NUM_SWITCH);
-            //close(DEV_NUM_LED);
-            //close(DEV_NUM_FND);
-            //close(DEV_NUM_DOT);
-            //close(DEV_NUM_TEXT);
-
-	    close(dev_push_switch);
-	 //   close(dev_led);
-         //   close(dev_fnd);
-	 //   close(dev_dot);
-	 //   close(dev_text_lcd);
-        
-	    printf("Device Open Error: dev number: %d \n", dev_push_switch);
-            return -1;
-        }
-        else
-        {
-            printf("Switch Device Number %d \n", dev_push_switch );
-        }
-        
-        (void)signal(SIGINT, user_signal1);
-
-	buff_size=sizeof(push_sw_buff);
-
-
-        // program run
-        while(1)
-        {
-           usleep(40000); // test
-           read(dev_push_switch,&push_sw_buff, buff_size);
-           flag_push[9];
-           
-           for(i=0; i<9; i++)
-           {
-                 if(push_sw_buff[i] == 1){
-                        
-                        printf("is it on adding flag_push? \n");
-	                flag_push[i]++;
-                        if(i == 0 && flag_push[i]==4)
-                        {
-                             flag_push[i] = 0;
-                        }
-                        if(i == 1 && flag_push[i]==2)
-                        {
-                             flag_push[i] = 0;
-                        }
-                        if(i == 2 && flag_push[i]==2)
-                        {
-                             flag_push[i] = 0;
-                        }
-                        if(i == 3 && flag_push[i]==2)
-                        {
-                             flag_push[i] = 0;
-                        }
-                        if(i == 4)
-                        {
-                             flag_push[i] = 0;
-                        }
-	         }	
-                 
-           }
-
-           //for flag debug
-           printf("button pushed \n");
-           for(i=0; i<9; i++)
-           {
-                printf("[%d] ", push_sw_buff[i]) ;
-           }
-           printf("\n");
-           printf("number of button pushed \n");
-           for(i=0; i<9; i++)
-           {
-                printf("[%d] ", flag_push[i]) ;
-           }
-           printf("\n");
-           //flag debug end
-
-           if(push_sw_buff[5])
-           {
-                for(i=0; i<9; i++)
+            if(parsed_button[i] == 1){
+                printf("is it on adding flag_push? \n");
+                flag_push[i]++;
+                if(i == 0 && flag_push[i]==4)
                 {
-                    printf("push_sw_buffer before exit %d \n", push_sw_buff[i]) ;
-                } 
-                break;
-           }
-           if(flag_push[0])
-           {
-	        system(LED_7);
-	        system(LED_8);
-           }
-           if(flag_push[1])
-           {
-                if(flag_push[1] == 1)
-                {
-	    	    system(SEVENSEG);
+                    flag_push[i] = 0;
                 }
-                if(flag_push[1] == 0)
+                if(i == 1 && flag_push[i]==2)
                 {
-	    	    system(SEVENSEG_INIT);
+                    flag_push[i] = 0;
                 }
-           }
- 	   if(flag_push[2])
-           {
-           }
- 	   if(flag_push[3])
-           {
-           }
-           if(flag_push[4])
-           {
-           }
-           if(flag_push[5])//for exit while to close devices
-           {
-           }
-           if(flag_push[6])
-           {
-           }
-           if(flag_push[7])
-           {
-           }
-           if(flag_push[8])
-           {
-           }
-           //  for exit while
-           
+                if(i == 2 && flag_push[i]==2)
+                {
+                    flag_push[i] = 0;
+                }
+                if(i == 3 && flag_push[i]==2)
+                {
+                    flag_push[i] = 0;
+                }
+                if(i == 4)
+                {
+                    flag_push[i] = 0;
+                }
+            }	
         }
 
-        //close(DEV_NUM_SWITCH);
-        //close(DEV_NUM_LED);
-        //close(DEV_NUM_FND);
-        //close(DEV_NUM_DOT);
-        //close(DEV_NUM_TEXT);
+        //for flag debug
+        printf("button pushed \n");
+        for(i=0; i<9; i++)
+        {
+            printf("[%d] ", push_sw_buff[i]) ;
+        }
+        printf("\n");
+        printf("number of button pushed \n");
+        for(i=0; i<9; i++)
+        {
+            printf("[%d] ", flag_push[i]) ;
+        }
+        printf("\n");
+        //flag debug end
 
-        close(dev_push_switch);
-        close(dev_led);
-        close(dev_fnd);
-        close(dev_dot);
-        close(dev_text_lcd);
-        
-         
-   //     close(dev_push_switch);
+        if(parsed_button[5])
+        {
+            for(i=0; i<9; i++)
+            {
+                printf("parsed_button before exit %d \n", parsed_button[i]) ;
+            } 
+            break;
+        }
+        if(flag_push[0])
+        {
+            system(LED_7);
+            system(LED_8);
+        }
+        if(flag_push[1])
+        {
+            system(SEVENSEG);
+        }
+        if(flag_push[1] == 0)
+        {
+            system(SEVENSEG_INIT);
+        }
+        if(flag_push[2])
+        {
+        }
+ 	    if(flag_push[3])
+        {
+        }
+        if(flag_push[4])
+        {
+        }
+        if(flag_push[5])
+        {
+        }
+        if(flag_push[6])
+        {
+        }
+        if(flag_push[7])
+        {
+        }
+        if(flag_push[8])
+        {
+        }
+    }
+
+    close(DEV_NUM_DOT);
+    close(DEV_NUM_FND);
+    close(DEV_NUM_LED);
+    close(DEV_NUM_SWITCH);
+    close(DEV_NUM_TEXT);
 
 	return 0;
 }
