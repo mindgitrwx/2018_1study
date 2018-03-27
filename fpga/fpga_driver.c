@@ -6,6 +6,7 @@
  *
  * Modified :
  * 	Created : March 16, 2018 by Dongheon Han
+ *      Modified: March 27, 2018 by JongHyeon Yeo (jonghyeon.rw@gmail.com)
 ****************************************************************************/
 
 #include <stdio.h>
@@ -60,39 +61,11 @@ int main(void)
 	unsigned char push_sw_buff[MAX_BUTTON];
 
 	dev_push_switch = open("/dev/fpga_push_switch", O_RDWR);
-	//dev_led = open("/dev/fpga_led", O_RDWR);
-	//dev_fnd = open("/dev/fpga_fnd", O_RDWR);
-	//dev_dot = open("/dev/fpga_dot", O_RDWR);
-	//dev_text_lcd = open("/dev/fpga_text_lcd", O_RDWR);
-
-	//close(dev_push_switch);
-	//close(dev_led);
-	//close(dev_fnd);
-	//close(dev_dot);
-	//close(dev_text_lcd);
-        ////for get dev number
-        //printf("Device Open switch  dev number: %d \n", dev_push_switch);
-        //printf("Device Open led dev number: %d \n", dev_led);
-        //printf("Device Open fnd dev number: %d \n", dev_fnd);
-        //printf("Device Open dot dev number: %d \n", dev_dot);
-        //printf("Device Open text dev number: %d \n", dev_text_lcd);
-
+        
         // Device Push open
         if(dev_push_switch<0)
         {
-            //close(dev_push_switch);
-            //close(DEV_NUM_SWITCH);
-            //close(DEV_NUM_LED);
-            //close(DEV_NUM_FND);
-            //close(DEV_NUM_DOT);
-            //close(DEV_NUM_TEXT);
-
 	    close(dev_push_switch);
-	 //   close(dev_led);
-         //   close(dev_fnd);
-	 //   close(dev_dot);
-	 //   close(dev_text_lcd);
-        
 	    printf("Device Open Error: dev number: %d \n", dev_push_switch);
             return -1;
         }
@@ -111,13 +84,11 @@ int main(void)
         {
            usleep(40000); // test
            read(dev_push_switch,&push_sw_buff, buff_size);
-           flag_push[9];
            
            for(i=0; i<9; i++)
            {
                  if(push_sw_buff[i] == 1){
-                        
-                        printf("is it on adding flag_push? \n");
+                        printf("is it on adding flag_push? \n"); // the line is not run 
 	                flag_push[i]++;
                         if(i == 0 && flag_push[i]==4)
                         {
@@ -191,7 +162,7 @@ int main(void)
            if(flag_push[4])
            {
            }
-           if(flag_push[5])//for exit while to close devices
+           if(flag_push[5])
            {
            }
            if(flag_push[6])
@@ -203,24 +174,12 @@ int main(void)
            if(flag_push[8])
            {
            }
-           //  for exit while
-           
         }
-
-        //close(DEV_NUM_SWITCH);
-        //close(DEV_NUM_LED);
-        //close(DEV_NUM_FND);
-        //close(DEV_NUM_DOT);
-        //close(DEV_NUM_TEXT);
 
         close(dev_push_switch);
         close(dev_led);
         close(dev_fnd);
         close(dev_dot);
         close(dev_text_lcd);
-        
-         
-   //     close(dev_push_switch);
-
 	return 0;
 }
