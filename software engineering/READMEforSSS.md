@@ -13,10 +13,19 @@ Cohensiojn
 LOC
 
 어느 부분을 고쳐야 할 지에 관한 좌표
+Todo 를 통해 어떤 내용들이 있는 지 확인하기 
 
 폴더에 관한 정보
 
+예상 중요도 
+nn  - 코어 뉴럴네트워크 structure (Multilayer  Network/ Computational Graph )
+core - nn에 추가된 내용
+modelimport - keras를 위한 프로그램  (★★★)  
+nlp - 자연어 처리 프로그램 (★★★★★) - 접근해서 수정할 수 있는 부분이 있어 보임
+scaleout - 리소스 통합하는 부분 (접근하기가 힘들어 보임)
+ex) 
 KoreanTokenizer.JAVA
+UI - 유저인터페이스를 보여줌 (★★★★)- 눈으로 보이는 부분 
 
 
 Deeplearning for java 를 위한 ebook
