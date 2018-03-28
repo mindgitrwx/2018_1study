@@ -3,6 +3,9 @@ CUDA
 소프트웨어 시스템 설계 관련 자료
 https://zemalee.github.io/2017/06/16/%EC%86%8C%EC%8B%9C%EC%84%A4-%EC%8B%9C%ED%97%98%EB%8C%80%EB%B9%84-%EB%B9%A0%EC%83%A4.html
 
+Junit test 에 관련된 예제 (불완전함) 
+https://github.com/mindgitrwx/2018_1study/blob/master/software%20engineering/workspace/StringStack/src/TransitionPairCoverageTest.java
+
 앞으로 측정해야 할 것
 
 CC
