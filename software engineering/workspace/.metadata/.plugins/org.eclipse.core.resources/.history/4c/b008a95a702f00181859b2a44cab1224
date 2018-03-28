@@ -1,0 +1,13 @@
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class TransitionPairCoverageTest {
+
+	@Test
+	public void test() {
+		assert()
+		fail("Not yet implemented");
+	}
+
+}

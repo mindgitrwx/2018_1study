@@ -1,0 +1,484 @@
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+public class TransitionPairCoverageTest {
+
+	private static StringStack strStack; 
+
+	/*
+	@BeforeClass
+	public static void init() {
+		strStack =  new StringStack();
+		assertEquals( strStack.getMaxSize(), 20) ; 
+		assertEquals( strStack.getSize()   , 0) ; 
+	}
+	*/
+	
+	// from init
+	@Test
+	public void initToEmptyTestByDefaltInitialzer() {
+		strStack =  new StringStack();
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+
+	@Test
+	public void initToEmptyTestByNull() {
+		String str = null; 
+		strStack =  new StringStack(str);
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+
+	@Test
+	public void initToFilledTest() {
+		String str = "asdf"; 
+		strStack =  new StringStack(str);
+
+		assertEquals( 1 , strStack.getSize()) ; 
+	}
+
+
+
+    /* from empty */
+    
+    /* 가장 최근에 입력한 데이터를 반환하고 스택 크기를 1만큼 감소시킨다 */
+    @Test
+	public void emptyToEmptyTest() {
+        initToEmptyTestByNull();
+		strStack =  new StringStack();
+    	strStack.pop();
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+
+    @Test
+	public void emptyToFilledByStrTest() {
+    	int preSize, nextSize;
+        initToEmptyTestByNull();
+		preSize = strStack.getSize();
+
+		//test
+		assertEquals( 0 , preSize) ; 
+		assertEquals( 0 , strStack.getSize()) ; 
+
+    	strStack.push("asdf");
+
+    	nextSize = strStack.getSize();
+		assertEquals( 1 , nextSize) ; 
+		assertEquals( 1 , strStack.getSize()) ; 
+
+	}
+
+    @Test
+	public void emptyToFilledByCharTest() {
+    	
+    	int preSize, nextSize;
+        initToEmptyTestByNull();
+		strStack =  new StringStack();
+    	// initialized
+		char alphabet = 'a';
+		
+		//test
+		preSize = strStack.getSize();
+		assertEquals( 0 , preSize) ; 
+		assertEquals( 0 , strStack.getSize()) ; 
+
+    	strStack.push(alphabet);
+
+    	nextSize = strStack.getSize();
+		assertEquals( 1 , nextSize) ; 
+		assertEquals( 1 , strStack.getSize()) ; 
+	}
+
+    /* from filled */
+
+    @Test
+ 	public void filledToFilledByStrPushTest() {
+    	int preSize = 0, nextSize = 0;
+
+    	emptyToFilledByCharTest();
+		preSize = strStack.getSize();
+    	strStack.push("asdf");
+    	nextSize = strStack.getSize();
+
+		assertEquals( preSize+1 , nextSize); 
+		assertEquals( 2 , strStack.getSize()) ; 
+	}  
+
+    @Test
+ 	public void filledToFilledByChrPushTest() {
+    	
+    	int preSize = 0, nextSize = 0;
+		char alphabet = 'a';
+
+    	emptyToFilledByCharTest();
+		preSize = strStack.getSize();
+		strStack.push(alphabet);
+    	nextSize = strStack.getSize();
+
+		assertEquals( preSize+1 , nextSize); 
+		assertEquals( 2 , strStack.getSize()) ; 
+	}  
+
+ 	@Test
+ 	public void filledToFilledByPopTest() {
+    	int preSize = 0, nextSize = 0;
+	    
+    	filledToFilledByChrPushTest(); 
+		preSize = strStack.getSize();
+    	if( 1 < preSize && preSize < 20)
+    	{
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+    	}
+	} 
+ 	
+ 	@Test
+  	public void filledToEmptyTest() {
+    	int preSize = 0, nextSize = 0;
+    
+    	emptyToFilledByCharTest();
+		preSize = strStack.getSize();
+    	if( 1 == preSize )
+    	{
+    		preSize = strStack.getSize();
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+			assertEquals( 0, nextSize); 
+			assertTrue( strStack.isEmpty()); 
+		}
+	}
+			 
+  
+ 	// filledToFulledTests
+	@Test
+	public void filledToFulledByCharTest() {
+    	int preSize = 0, nextSize = 0;
+
+    	// Move to Filled 
+    	filledToFilledByChrPushTest(); 
+		preSize = strStack.getSize();
+
+		char chars[] = 
+		{
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+		};
+		
+		int i = 0;
+		while(strStack.getSize()<strStack.getMaxSize()-1)
+		{
+			i++;
+			strStack.push(chars[i]);
+		}
+		preSize = strStack.getSize();
+		
+		if( strStack.getMaxSize() - 1 == preSize )
+		{
+			preSize = strStack.getSize();
+			strStack.push('t');
+			nextSize = strStack.getSize();
+			assertEquals( preSize , nextSize-1); 
+
+			// fulled Test
+			assertEquals( 20 , strStack.getSize()) ; 
+			assertEquals( strStack.getMaxSize(), strStack.getSize()) ; 
+			assertTrue(strStack.isFull());
+		}	
+	}
+	
+	@Test
+	public void filledToFulledByStrTest() {
+		int preSize = 0, nextSize = 0;
+
+    	// Move to Filled 
+    	filledToFilledByChrPushTest(); 
+		preSize = strStack.getSize();
+		
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5",
+				"dog6","dog7","dog8","dog9","dog10",
+				"dog11", "dog12", "dog13", "dog14", "dog15",
+				"dog16", "dog17", "dog18", "dog19", "dog20",
+				"dog16", "dog17", "dog18", "dog19", "dog20",
+				"dog", "dog", "dog", "dog", "dog",
+				"dog", "dog", "dog", "dog", "dog",
+				
+		};
+	
+		int i = 0;
+		while(strStack.getSize()<strStack.getMaxSize()-1)
+		{
+			i++;
+			strStack.push(strs[i]);
+		}
+		
+     	preSize = strStack.getSize();
+		if( strStack.getMaxSize() - 1 == preSize )
+		{	
+			strStack.push("lastone");
+			// fulled Test
+			assertEquals( 20 , strStack.getSize()) ; 
+			assertEquals( strStack.getMaxSize(), strStack.getSize()) ; 
+			assertTrue(strStack.isFull());
+		}
+	}
+
+	/* from fulled */
+	@Test
+	public void fulledToFilledTest() {
+		int preSize , nextSize ;
+        
+		filledToFulledByStrTest(); 
+		preSize =  strStack.getSize();
+		if(preSize == strStack.getMaxSize())
+		{
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+			assertEquals( strStack.getMaxSize() - 1 , strStack.getSize()) ; 
+		}
+	}
+
+	// overflow
+	/*
+	@Test
+	public void OverflowedStackTestCases() throws IOException  {
+		StringStack strStack =  new StringStack();
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5", "dog6","dog7","dog8","dog9",
+				"dog10","dog11", "dog12", "dog13", "dog14", "dog15", "dog16", "dog17", "dog18", "dog19",
+				"dog20"
+		};
+		for(int i = 0; i<strs.length; i++)
+		{
+			strStack.push(strs[i]);
+		}
+		assertEquals( strStack.getMaxSize(), stringstack.getSize()) ; 
+	}
+	*/
+
+	// Upper codes are transition coverage test codes.
+	// Every methods that written on upper define each transition
+	// Compounding upper codes, We can make transition pair coverage test
+
+	@Test
+	public void emptyToEmpty()
+	{
+		initToEmptyTestByDefaltInitialzer();
+		emptyToEmptyTest();
+		
+		initToEmptyTestByNull();
+		emptyToEmptyTest();
+
+		filledToEmptyTest();
+		emptyToEmptyTest();
+	}
+	@Test
+	public void emptyToFilledByCharPairs()
+	{
+		initToEmptyTestByDefaltInitialzer();
+		emptyToFilledByCharTest();
+		
+		initToEmptyTestByNull();
+		emptyToFilledByCharTest();
+
+		filledToEmptyTest();
+		emptyToEmptyTest();
+	}
+	@Test
+	public void emptyToFilledByStrPairs()
+	{
+		initToEmptyTestByDefaltInitialzer();
+		emptyToFilledByStrTest();
+		
+		initToEmptyTestByNull();
+		emptyToFilledByStrTest();
+
+		filledToEmptyTest();
+		emptyToFilledByStrTest();
+		
+	}
+	@Test	
+	public void filledToFilledByChrPushPairs()
+	{
+		emptyToFilledByCharTest();
+		filledToFilledByChrPushTest();
+		
+		emptyToFilledByStrTest();
+		filledToFilledByChrPushTest();
+		
+		filledToFilledByChrPushTest();
+		filledToFilledByChrPushTest();
+		
+		filledToFilledByStrPushTest();
+		filledToFilledByChrPushTest();
+		
+		filledToFilledByPopTest();
+		filledToFilledByChrPushTest();
+		
+		fulledToFilledTest();
+		filledToFilledByChrPushTest();
+		
+		initToFilledTest();
+		filledToFilledByChrPushTest();
+	}	
+	
+	@Test	
+	public void filledToFilledByPopPairs()
+	{
+		emptyToFilledByCharTest();
+		filledToFilledByPopTest();
+
+		emptyToFilledByStrTest();
+		filledToFilledByPopTest();
+		
+		filledToFilledByChrPushTest();
+		filledToFilledByPopTest();
+		
+		filledToFilledByStrPushTest();
+		filledToFilledByPopTest();
+		
+		filledToFilledByPopTest();
+		filledToFilledByPopTest();
+		
+		fulledToFilledTest();
+		filledToFilledByPopTest();
+		
+		initToFilledTest();
+		filledToFilledByPopTest();
+	
+	}
+	
+	@Test	
+	public void filledToEmptyPairs()
+	{
+		emptyToFilledByCharTest();
+		filledToEmptyTest();
+		
+		emptyToFilledByStrTest();
+		filledToEmptyTest();
+		
+		filledToFilledByChrPushTest();
+		filledToEmptyTest();
+		
+		filledToFilledByStrPushTest();
+		filledToEmptyTest();
+		
+		filledToFilledByPopTest();
+		filledToEmptyTest();
+		
+		fulledToFilledTest();
+		filledToEmptyTest();
+		
+		initToFilledTest();
+		filledToEmptyTest();
+	
+	}
+	
+	@Test	
+	public void fulledToFilledPairs()
+	{
+		filledToFulledByCharTest();
+		fulledToFilledTest();
+		
+		filledToFulledByStrTest();
+		fulledToFilledTest();
+		
+	}
+	
+	@Test	
+	public void filledToFulledByStrPairs()
+	{
+		emptyToFilledByCharTest();
+		filledToFulledByStrTest();
+		
+		emptyToFilledByStrTest();
+		filledToFulledByStrTest();
+		
+		filledToFilledByChrPushTest();
+		filledToFulledByStrTest();
+		
+		filledToFilledByStrPushTest();
+		filledToFulledByStrTest();
+		
+		filledToFilledByPopTest();
+		filledToFulledByStrTest();
+		
+		fulledToFilledTest();
+		filledToFulledByStrTest();
+		
+		initToFilledTest();
+		filledToFulledByStrTest();
+		
+	}
+
+	@Test	
+	public void filledToFilledByStrPushPairs()
+	{
+		emptyToFilledByCharTest();
+		filledToFilledByStrPushTest();
+		
+		emptyToFilledByStrTest();
+		filledToFilledByStrPushTest();
+		
+		filledToFilledByChrPushTest();
+		filledToFilledByStrPushTest();
+		
+		filledToFilledByStrPushTest();
+		filledToFilledByStrPushTest();
+		
+		filledToFilledByPopTest();
+		filledToFilledByStrPushTest();
+		
+		fulledToFilledTest();
+		filledToFilledByStrPushTest();
+		
+		initToFilledTest();
+		filledToFilledByStrPushTest();
+	}
+
+	@Test	
+	public void filledToFulledByCharPairs()
+	{
+		emptyToFilledByCharTest();
+		filledToFulledByCharTest();
+		
+		emptyToFilledByStrTest();
+		filledToFulledByCharTest();
+		
+		filledToFilledByChrPushTest();
+		filledToFulledByCharTest();
+		
+		filledToFilledByStrPushTest();
+		filledToFulledByCharTest();
+		
+		filledToFilledByPopTest();
+		filledToFulledByCharTest();
+		
+		fulledToFilledTest();
+		filledToFulledByCharTest();
+		
+		initToFilledTest();
+		filledToFulledByCharTest();
+	
+	}
+}

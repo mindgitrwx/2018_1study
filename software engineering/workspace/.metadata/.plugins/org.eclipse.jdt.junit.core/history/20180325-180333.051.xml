@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="StateCoverageTest" project="StringStack" tests="4" started="4" failures="0" errors="0" ignored="0">
+  <testsuite name="StateCoverageTest" time="0.001">
+    <testcase name="FilledStackStateCases" classname="StateCoverageTest" time="0.0"/>
+    <testcase name="OverflowedStackTestCases" classname="StateCoverageTest" time="0.0"/>
+    <testcase name="EmptyStackStateCases" classname="StateCoverageTest" time="0.0"/>
+    <testcase name="FulledStackTestCases" classname="StateCoverageTest" time="0.0"/>
+  </testsuite>
+</testrun>

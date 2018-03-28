@@ -1,0 +1,319 @@
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+public class TransitionPairCoverageTest {
+
+	private static StringStack strStack; 
+
+	@BeforeClass
+	public static void init() {
+		strStack =  new StringStack();
+		int preSize = 0;
+		int nextSize = 0;
+		assertEquals( strStack.getMaxSize(), 20) ; 
+		assertEquals( strStack.getSize()   , 0) ; 
+	}
+
+	
+	// Goto Empty State
+	@Test
+	public void initToEmptyTestByDefaltInitialzer() {
+		strStack =  new StringStack();
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+
+	@Test
+	public void initToEmptyTestByNull() {
+		String str = null; 
+		strStack =  new StringStack(str);
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+
+
+    /* empty to empty */
+    @Test
+	public void emptyToEmptyTestFromDefalt() {
+    	initToEmptyTestByDefaltInitialzer(); 
+    	strStack.pop();
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+    @Test
+	public void emptyToEmptyTestFromNull() {
+		initToEmptyTestByNull(); 
+    	strStack.pop();
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+	
+    /* empty to filled by str */
+    @Test
+	public void emptyFromDefaultToFilledByStrTest() {
+    	initToEmptyTestByDefaltInitialzer(); 
+		int preSize = 0;
+		int nextSize = 0;
+	
+		preSize = strStack.getSize();
+		assertEquals( 0 , preSize) ; 
+		assertEquals( 0 , strStack.getSize()) ; 
+
+    	strStack.push("asdf");
+
+    	nextSize = strStack.getSize();
+		assertEquals( 1 , nextSize) ; 
+		assertEquals( 1 , strStack.getSize()) ; 
+	}
+    @Test
+	public void emptyFromNullToFilledByStrTest() {
+		initToEmptyTestByNull(); 
+		int preSize = 0;
+		int nextSize = 0;
+	
+		preSize = strStack.getSize();
+		assertEquals( 0 , preSize) ; 
+		assertEquals( 0 , strStack.getSize()) ; 
+
+    	strStack.push("asdf");
+
+    	nextSize = strStack.getSize();
+		assertEquals( 1 , nextSize) ; 
+		assertEquals( 1 , strStack.getSize()) ; 
+	}
+
+    /* empty to filled by char */
+    @Test
+	public void emptyFromDefaultToFilledByCharTest() {
+    	initToEmptyTestByDefaltInitialzer(); 
+
+    	// initialized
+		char alphabet = 'a';
+		
+		int preSize = 0;
+		int nextSize = 0;
+
+		preSize = strStack.getSize();
+		assertEquals( 0 , preSize) ; 
+		assertEquals( 0 , strStack.getSize()) ; 
+
+    	strStack.push(alphabet);
+
+    	nextSize = strStack.getSize();
+		assertEquals( 1 , nextSize) ; 
+		assertEquals( 1 , strStack.getSize()) ; 
+	}
+    @Test
+	public void emptyFromNullFilledByCharTest() {
+    	initToEmptyTestByNull();
+
+    	// initialized
+		char alphabet = 'a';
+		
+		int preSize = 0;
+		int nextSize = 0;
+
+		preSize = strStack.getSize();
+		assertEquals( 0 , preSize) ; 
+		assertEquals( 0 , strStack.getSize()) ; 
+
+    	strStack.push(alphabet);
+
+    	nextSize = strStack.getSize();
+		assertEquals( 1 , nextSize) ; 
+		assertEquals( 1 , strStack.getSize()) ; 
+	}
+
+    /* from filled */
+    @Test
+ 	public void filledToFilledByStrPushTest() {
+    	int preSize = 0, nextSize = 0;
+
+        emptyFromNullFilledByCharTest() 
+        emptyFromDefaultToFilledByCharTest();
+        emptyFromDefaultToFilledByStrTest();
+        emptyFromNullToFilledByStrTest();
+        
+		preSize = strStack.getSize();
+    	strStack.push("asdf");
+    	nextSize = strStack.getSize();
+
+		assertEquals( preSize+1 , nextSize); 
+		assertEquals( 2 , strStack.getSize()) ; 
+	}  
+    @Test
+ 	public void filledToFilledByChrPushTest() {
+    	
+    	int preSize = 0, nextSize = 0;
+		char alphabet = 'a';
+
+        emptyFromNullFilledByCharTest() 
+        emptyFromDefaultToFilledByCharTest();
+        emptyFromDefaultToFilledByStrTest();
+        emptyFromNullToFilledByStrTest();
+ 
+    	emptyToFilledByCharTest();
+		preSize = strStack.getSize();
+		strStack.push(alphabet);
+    	nextSize = strStack.getSize();
+
+		assertEquals( preSize+1 , nextSize); 
+		assertEquals( 2 , strStack.getSize()) ; 
+	}  
+ 
+ 	@Test
+ 	public void filledToFilledByStrPopTest() {
+    	int preSize = 0, nextSize = 0;
+	    
+    	filledToFilledByChrPushTest(); 
+		preSize = strStack.getSize();
+    	if( 1 < preSize && preSize < 20)
+    	{
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+    	}
+	} 
+ 	
+ 	@Test
+  	public void filledToEmptyTest() {
+    	int preSize = 0, nextSize = 0;
+    
+    	
+    	emptyToFilledByCharTest();
+		preSize = strStack.getSize();
+    	if( 1 == preSize )
+    	{
+    		preSize = strStack.getSize();
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+			assertEquals( 0, nextSize); 
+			assertTrue( strStack.isEmpty()); 
+		}
+	}
+			 
+  
+ 	// filledToFulledTests
+	@Test
+	public void filledToFulledByCharTest() {
+    	int preSize = 0, nextSize = 0;
+
+    	// Move to Filled 
+    	filledToFilledByChrPushTest(); 
+		preSize = strStack.getSize();
+
+		char chars[] = 
+		{
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+			 'a', 'b', 'c', 'd',
+		};
+		
+		int i = 0;
+		while(strStack.getSize()<strStack.getMaxSize()-1)
+		{
+			i++;
+			strStack.push(chars[i]);
+		}
+		preSize = strStack.getSize();
+		
+		if( strStack.getMaxSize() - 1 == preSize )
+		{
+			preSize = strStack.getSize();
+			strStack.push('t');
+			nextSize = strStack.getSize();
+			assertEquals( preSize , nextSize-1); 
+
+			// fulled Test
+			assertEquals( 20 , strStack.getSize()) ; 
+			assertEquals( strStack.getMaxSize(), strStack.getSize()) ; 
+			assertTrue(strStack.isFull());
+		}	
+	}
+	
+	@Test
+	public void filledToFulledByStrTest() {
+		int preSize = 0, nextSize = 0;
+
+    	// Move to Filled 
+    	filledToFilledByChrPushTest(); 
+		preSize = strStack.getSize();
+		
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5",
+				"dog6","dog7","dog8","dog9","dog10",
+				"dog11", "dog12", "dog13", "dog14", "dog15",
+				"dog16", "dog17", "dog18", "dog19", "dog20",
+				"dog16", "dog17", "dog18", "dog19", "dog20",
+				"dog", "dog", "dog", "dog", "dog",
+				"dog", "dog", "dog", "dog", "dog",
+				
+		};
+	
+		int i = 0;
+		while(strStack.getSize()<strStack.getMaxSize()-1)
+		{
+			i++;
+			strStack.push(strs[i]);
+		}
+		
+     	preSize = strStack.getSize();
+		if( strStack.getMaxSize() - 1 == preSize )
+		{	
+			strStack.push("lastone");
+			// fulled Test
+			assertEquals( 20 , strStack.getSize()) ; 
+			assertEquals( strStack.getMaxSize(), strStack.getSize()) ; 
+			assertTrue(strStack.isFull());
+		}
+	}
+
+	/* from fulled */
+	@Test
+	public void fulledToFilledTest() {
+		int preSize , nextSize ;
+        
+		filledToFulledByStrTest(); 
+		preSize =  strStack.getSize();
+		if(preSize == strStack.getMaxSize())
+		{
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+			assertEquals( strStack.getMaxSize() - 1 , strStack.getSize()) ; 
+		}
+	}
+
+	// overflow
+	/*
+	@Test
+	public void OverflowedStackTestCases() throws IOException  {
+		StringStack strStack =  new StringStack();
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5", "dog6","dog7","dog8","dog9",
+				"dog10","dog11", "dog12", "dog13", "dog14", "dog15", "dog16", "dog17", "dog18", "dog19",
+				"dog20"
+		};
+		for(int i = 0; i<strs.length; i++)
+		{
+			strStack.push(strs[i]);
+		}
+		assertEquals( strStack.getMaxSize(), stringstack.getSize()) ; 
+	}
+	*/
+}

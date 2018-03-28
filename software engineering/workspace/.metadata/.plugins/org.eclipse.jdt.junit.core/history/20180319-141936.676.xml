@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="CharacterStackTest" project="CharacterStack" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="CharacterStackTest" time="0.001">
-    <testcase name="test" classname="CharacterStackTest" time="0.001"/>
-    <testcase name="test1" classname="CharacterStackTest" time="0.0"/>
-  </testsuite>
-</testrun>

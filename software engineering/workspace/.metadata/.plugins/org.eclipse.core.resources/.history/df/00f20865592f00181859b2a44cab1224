@@ -1,0 +1,119 @@
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+/**
+ * 
+ * @author jonghyun 
+ * Created by jonghyeon yeo on 18/03/24.
+ */
+
+public class StateCoverageTest {
+	
+
+	@BeforeClass
+	
+	@Before
+	
+	@AfterClass
+	
+	@Test
+	public void defalutValueTest() {
+		StringStack stringstack =  new StringStack();
+		assertEquals( stringstack.getMaxSize(), 20) ; 
+		assertEquals( stringstack.getSize()   , 0) ; 
+	}
+
+	@Test
+	public void init() {
+		StringStack stringstack =  new StringStack();
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5", "dog6","dog7","dog8","dog9",
+				"dog10","dog11", "dog12", "dog13", "dog14", "dog15", "dog16", "dog17", "dog18", "dog19"
+		};
+	
+	
+
+	    /*	
+		for(int i = 0; i<=strs.length; i++)
+		{
+			stringstack.push(strs[i]);
+			System.out.print(strs[i]);
+			System.out.print(stringstack.pop());
+		    //assertEquals( "dog" + Integer.toString(i), stringstack.pop()) ; 
+			stringstack.push(strs[i]);
+		}
+		*/
+	}
+
+    @Test
+	public void EmptyStackStateCases() {
+		StringStack stringstack =  new StringStack();
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5", "dog6","dog7","dog8","dog9",
+				"dog10","dog11", "dog12", "dog13", "dog14", "dog15", "dog16", "dog17", "dog18", "dog19"
+		};
+		for(int i = 0; i<=strs.length; i++)
+		{
+		    assertEquals( 0 , stringstack.getSize()) ; 
+		}
+	}  
+
+    @Test
+ 	public void FilledStackStateCases() {
+		StringStack stringstack =  new StringStack();
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5", "dog6","dog7","dog8","dog9",
+				"dog10","dog11", "dog12"//, "dog13", "dog14", "dog15", "dog16", "dog17", "dog18" 
+		};
+		for(int i = 0; i< strs.length; i++)
+		{
+			stringstack.push(strs[i]);
+			System.out.print(strs[i]);
+			System.out.print(stringstack.pop());
+		    //assertEquals( "dog" + Integer.toString(i), stringstack.pop()) ; 
+			stringstack.push(strs[i]);
+		}
+	}  
+    
+	@Test
+	public void FulledStackTestCases() {
+		StringStack stringstack =  new StringStack();
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5", "dog6","dog7","dog8","dog9",
+				"dog10","dog11", "dog12", "dog13", "dog14", "dog15", "dog16", "dog17", "dog18", "dog19"
+				
+		};
+		
+		for(int i = 0; i<strs.length; i++)
+		{
+			stringstack.push(strs[i]);
+		}
+		assertEquals( stringstack.getMaxSize(), stringstack.getSize()) ; 
+	}
+		
+	@Test
+	public void OverflowedStackTestCases() throws IOException  {
+		StringStack stringstack =  new StringStack();
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5", "dog6","dog7","dog8","dog9",
+				"dog10","dog11", "dog12", "dog13", "dog14", "dog15", "dog16", "dog17", "dog18", "dog19",
+				"dog20"
+		};
+		for(int i = 0; i<strs.length; i++)
+		{
+			stringstack.push(strs[i]);
+		}
+		assertEquals( stringstack.getMaxSize(), stringstack.getSize()) ; 
+	}
+}

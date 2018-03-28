@@ -1,0 +1,281 @@
+/**
+ * 
+ * @author JongHyeonYeo 
+ * Created by jonghyeon yeo on 18/03/24.
+ * 
+ * Convention: 
+ * Transitions method name: ($previousStateName)To($nextStateName) + (By($WayOfTransit))-optional
+ * 
+ * Report: Two abnormal transition are discovered on 'Transition Coverage test'.
+ * 1. filledToEmptyTest 
+ * 2. fulledToFilledTest 
+ *  
+ * It seems 'strStack.pop()' makes abnormal behavior 
+ * 
+ * Todo: find a way to check stackoverflow error on transition coverage test 
+ * In this test, I made OverflowedStackTest method, then ran coverage check tool(jacoco)
+ * and checked Faiure Trace on JUnit
+ * 
+ * Every Testing cases are self documented but if you don't understand any method,
+ * Please mail to 'jonghyeon.rw@gmail.com'
+ * 
+ */
+
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+import java.io.IOException;
+
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+public class TransitionCoverageTest {
+
+	private static StringStack strStack; 
+
+
+	// from init
+	@Test
+	public void initToEmptyTestByDefaltInitialzer() {
+		strStack =  new StringStack();
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+
+	@Test
+	public void initToEmptyTestByNull() {
+		String str = null; 
+		strStack =  new StringStack(str);
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+
+	@Test
+	public void initToFilledTest() {
+		String str = "asdf"; 
+		strStack =  new StringStack(str);
+
+		assertEquals( 1 , strStack.getSize()) ; 
+	}
+
+	// from empty
+	@Test
+	public void emptyToEmptyTest() {
+        initToEmptyTestByNull();
+		strStack =  new StringStack();
+    	assertEquals( "", strStack.pop());
+		assertEquals( 0 , strStack.getSize()) ; 
+		assertTrue(strStack.isEmpty()); 
+	}
+
+    @Test
+	public void emptyToFilledByStrTest() {
+    	int preSize, nextSize;
+        initToEmptyTestByNull();
+		preSize = strStack.getSize();
+
+		//test
+		assertEquals( 0 , preSize) ; 
+		assertEquals( 0 , strStack.getSize()) ; 
+
+    	strStack.push("asdf");
+
+    	nextSize = strStack.getSize();
+		assertEquals( 1 , nextSize) ; 
+		assertEquals( 1 , strStack.getSize()) ; 
+
+	}
+
+    @Test
+	public void emptyToFilledByCharTest() {
+    	
+    	int preSize, nextSize;
+        initToEmptyTestByNull();
+		strStack =  new StringStack();
+    	// initialized
+		char alphabet = 'a';
+		
+		//test
+		preSize = strStack.getSize();
+		assertEquals( 0 , preSize) ; 
+		assertEquals( 0 , strStack.getSize()) ; 
+
+    	strStack.push(alphabet);
+
+    	nextSize = strStack.getSize();
+		assertEquals( 1 , nextSize) ; 
+		assertEquals( 1 , strStack.getSize()) ; 
+	}
+    
+    
+    // from filled
+    @Test
+ 	public void filledToFilledByStrTest() {
+    	int preSize = 0, nextSize = 0;
+
+    	emptyToFilledByCharTest();
+		preSize = strStack.getSize();
+    	strStack.push("asdf");
+    	nextSize = strStack.getSize();
+
+		assertEquals( preSize+1 , nextSize); 
+		assertEquals( 2 , strStack.getSize()) ; 
+	}  
+
+    @Test
+ 	public void filledToFilledByChrTest() {
+    	
+    	int preSize = 0, nextSize = 0;
+		char alphabet = 'a';
+
+    	emptyToFilledByCharTest();
+		preSize = strStack.getSize();
+		strStack.push(alphabet);
+    	nextSize = strStack.getSize();
+
+		assertEquals( preSize+1 , nextSize); 
+		assertEquals( 2 , strStack.getSize()) ; 
+	}  
+
+ 	@Test
+ 	public void filledToFilledByPopTest() {
+    	int preSize = 0, nextSize = 0;
+	    
+    	filledToFilledByChrTest(); 
+		preSize = strStack.getSize();
+    	if( 1 < preSize && preSize < 20)
+    	{
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+    	}
+	} 
+ 	
+ 	@Test
+  	public void filledToEmptyTest() {
+    	int preSize = 0, nextSize = 0;
+    
+    	emptyToFilledByCharTest();
+		preSize = strStack.getSize();
+    	if( 1 == preSize )
+    	{
+    		preSize = strStack.getSize();
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+			assertEquals( 0, nextSize); 
+			assertTrue( strStack.isEmpty()); 
+		}
+	}
+			 
+  
+ 	/* note: It cannot coverage all the char values. 
+ 	 * try to change it with boundary char value
+ 	 */
+	@Test
+	public void filledToFulledByCharTest() {
+    	int preSize = 0, nextSize = 0;
+
+    	// Move to Filled 
+    	filledToFilledByChrTest(); 
+		preSize = strStack.getSize();
+
+		char chars[] = 
+		{
+			 'a', 'b', 'c', 'd',
+			 'e', 'f', 'g', 'h',
+			 'i', 'j', 'k', 'l',
+			 'n', 'm', 'o', 'p',
+			 'q', 'r', 's', 't',
+			 'u', 'v', 'w', 'x',
+			 'y', 'z', '0', '1',
+		};
+		
+		int i = 0;
+		while(strStack.getSize()<strStack.getMaxSize()-1)
+		{
+			i++;
+			strStack.push(chars[i]);
+		}
+		preSize = strStack.getSize();
+		
+		if( strStack.getMaxSize() - 1 == preSize )
+		{
+			preSize = strStack.getSize();
+			strStack.push('t');
+			nextSize = strStack.getSize();
+			assertEquals( preSize , nextSize-1); 
+
+			// fulled Test
+			assertEquals( 20 , strStack.getSize()) ; 
+			assertEquals( strStack.getMaxSize(), strStack.getSize()) ; 
+			assertTrue(strStack.isFull());
+		}	
+	}
+	
+	//from 
+	@Test
+	public void filledToFulledByStrTest() {
+		int preSize = 0, nextSize = 0;
+
+    	// Move to Filled 
+    	filledToFilledByChrTest(); 
+		preSize = strStack.getSize();
+		
+		String strs[] = 
+		{
+				"dog0","dog1","dog2","dog3","dog4","dog5",
+				"dog6","dog7","dog8","dog9","dog10",
+				"dog11", "dog12", "dog13", "dog14", "dog15",
+				"dog16", "dog17", "dog18", "dog19", "dog20",
+				"dog16", "dog17", "dog18", "dog19", "dog20",
+				"dog", "dog", "dog", "dog", "dog",
+				"dog", "dog", "dog", "dog", "dog",
+				
+		};
+	
+		int i = 0;
+		while(strStack.getSize()<strStack.getMaxSize()-1)
+		{
+			i++;
+			strStack.push(strs[i]);
+		}
+		
+     	preSize = strStack.getSize();
+		if( strStack.getMaxSize() - 1 == preSize )
+		{	
+			strStack.push("lastone");
+			// fulled Test
+			assertEquals( 20 , strStack.getSize()) ; 
+			assertEquals( strStack.getMaxSize(), strStack.getSize()) ; 
+			assertTrue(strStack.isFull());
+		}
+	}
+
+	/* from fulled */
+	@Test
+	public void fulledToFilledTest() {
+		int preSize , nextSize ;
+        
+		filledToFulledByStrTest(); 
+		preSize =  strStack.getSize();
+		if(preSize == strStack.getMaxSize())
+		{
+			strStack.pop();
+			nextSize = strStack.getSize();
+			assertEquals( preSize-1 , nextSize); 
+			assertEquals( strStack.getMaxSize() - 1 , strStack.getSize()) ; 
+		}
+	}
+
+	// Overflow Test
+	@Test
+	public void OverflowedStackTest() throws IOException  {
+		filledToFulledByStrTest();
+		strStack.push("overflowing abundunt Str");
+	}
+}

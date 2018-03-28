@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="TransitionCoverageTest" project="StringStack" tests="1" started="1" failures="0" errors="1" ignored="0">
+  <testsuite name="TransitionCoverageTest" time="0.002">
+    <testcase name="initializationError" classname="TransitionCoverageTest" time="0.002">
+      <error>java.lang.annotation.AnnotationFormatError: Duplicate annotation for class: interface org.junit.Test: @org.junit.Test(timeout=0, expected=class org.junit.Test$None)&#13;
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations2(Unknown Source)&#13;
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations(Unknown Source)&#13;
+	at java.lang.reflect.Executable.declaredAnnotations(Unknown Source)&#13;
+	at java.lang.reflect.Executable.declaredAnnotations(Unknown Source)&#13;
+	at java.lang.reflect.Executable.getDeclaredAnnotations(Unknown Source)&#13;
+	at java.lang.reflect.Method.getDeclaredAnnotations(Unknown Source)&#13;
+	at java.lang.reflect.AccessibleObject.getAnnotations(Unknown Source)&#13;
+	at org.junit.runners.model.FrameworkMethod.getAnnotations(FrameworkMethod.java:187)&#13;
+	at org.junit.runners.model.TestClass.addToAnnotationLists(TestClass.java:84)&#13;
+	at org.junit.runners.model.TestClass.scanAnnotatedMembers(TestClass.java:66)&#13;
+	at org.junit.runners.model.TestClass.&lt;init&gt;(TestClass.java:57)&#13;
+	at org.junit.runners.ParentRunner.createTestClass(ParentRunner.java:88)&#13;
+	at org.junit.runners.ParentRunner.&lt;init&gt;(ParentRunner.java:83)&#13;
+	at org.junit.runners.BlockJUnit4ClassRunner.&lt;init&gt;(BlockJUnit4ClassRunner.java:65)&#13;
+	at org.junit.internal.builders.JUnit4Builder.runnerForClass(JUnit4Builder.java:10)&#13;
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)&#13;
+	at org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(AllDefaultPossibilitiesBuilder.java:26)&#13;
+	at org.junit.runners.model.RunnerBuilder.safeRunnerForClass(RunnerBuilder.java:59)&#13;
+	at org.junit.internal.requests.ClassRequest.getRunner(ClassRequest.java:33)&#13;
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader.createUnfilteredTest(JUnit4TestLoader.java:84)&#13;
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader.createTest(JUnit4TestLoader.java:70)&#13;
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader.loadTests(JUnit4TestLoader.java:43)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:444)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:678)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)&#13;
+&#13;
+</error>
+    </testcase>
+  </testsuite>
+</testrun>
